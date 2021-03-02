@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+        <title>도서검색</title>
+        <link rel="stylesheet" href="style.css"/>
+        <style>
+            #tbl{width:900px; overflow:hidden}
+            .box{width:200px; height: 300px; padding-top:5px; float: left; background:skyblue; margin:10px;
+            box-shadow: 10px 10px 10px gray;text-align: center;}
+            .box .title{white-space: nowrap; overflow: hidden;text-overflow: ellipsis;
+            font-size: 12px; width:200px; padding-top: 5px;font-weight: bold;}
+        </style>
+    </head>
+    <body>
+        <div id="page">
+            <div id="top">
+                <a href="blog.html">블로그검색</a>&nbsp;&nbsp;&nbsp;
+                <a href="book.html">도서검색</a>&nbsp;&nbsp;&nbsp;
+                <a href="local.html">지역검색</a>&nbsp;&nbsp;&nbsp;
+            </div>
+            <div id="content">
+                <div class="subject"><h1>도서검색</h1></div>
+                <div id="divSearch">
+                    <input type="text" id="txtQuery" value=""/>
+                    <input type="button" id="btnSearch" value="검 색"/>
+                    <select id="selSize">
+                        <option value=4>4행식 출력</option>
+                        <option value=8>8행식 출력</option>
+                        <option value=12>12행식 출력</option>
+                        <option value=16>16행식 출력</option>
+                    </select>
+                </div>
+                <div id="tbl"></div>
+                <script id="temp" type="text/x-handlebars-template">
+                    {{#each documents}}
+                    <div class="box">
+                        <div><img src="{{thumbnail}}" width=150 contents="{{contents}}"></div>
+                        <div class="title">{{title}}</div>
+                        <div class="price">{{price}}원</div>
+                    </div>
+                    {{/each}}
+                </script>
+                <div id="divPage">
+                    <button id="btnPre">◀</button>
+                    <span id="spanPage"></span>
+                    <button id="btnNext">▶</button>
+                </div>
+                <div id="darken-background">
+                    <div id="lightbox">
+                        <div id="title"></div>
+                        <div id="price"></div>
+                        <div><img id="image" src="http://placehold.it/150x200" width 150></dic>
+                        <div id="contents" style="padding:10px;font-size: 12px;"></div>
+                        <input type="button" value=" 닫 기 " id="btClose"/>
+                    </div>
+                </div> 
+            </div>
+            <div id="bottom">
+           </div>
+    </body>
+    <script>
+        var url="https://dapi.kakao.com/v3/search/book?target=title";
+
+        $("#tbl").on("click",".box img",function(){
+            $("#contents").html($(this).attr("contents"));
+            $("#image").attr("src",$(this).attr("src"));
+            $("#darken-background").show();
+            $("#title").html($(this).parent().parent().find(".title"));
+            $("#price").html($(this).parent().parent().find(".price"));
+        });
+        $("#btClose").on("click", function(){
+            $("#darken-background").hide();
+        })
+
+        //라이트박스
+        $("#tbl").on("click",".box img", function(){
+            $("#image").attr("src", $(this).attr("src")); //this의 src값을 가져와서 img의 src값을 가져오기
+            $("#contents").html($(this).attr("contents")); //attr은 set, get 둘 다 가능
+            $("#darken-background").show();
+        });
+
+        $("#btnClose").on("click",function(){
+            $("#darken-background").hide();
+        });
+
+    </script>
+    <script src="script.js"></script>
+</html>
